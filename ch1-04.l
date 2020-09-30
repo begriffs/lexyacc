@@ -33,7 +33,7 @@ void *g_words = NULL;
 
 struct word
 {
-	const char *text;
+	char *text;
 	enum word_type type;
 };
 
@@ -76,29 +76,31 @@ int word_cmp(const void *a, const void* b)
 enum word_type
 word_lookup(const char *s)
 {
-	struct word w = { .text = s },
-		*elt = tfind(&w, &g_words, word_cmp);
-	printf("Root: %p, Elt: %p, Word: %s, Type: %s\n",
-		g_words, (void*)elt, elt ? elt->text : "<>",
-		elt ? word_type_names[elt->type] : "<>");
-	return elt ? elt->type : LOOKUP;
+	struct word w = { .text = (char *)s };
+	void *elt = tfind(&w, &g_words, word_cmp);
+	return elt ? (*(struct word **)elt)->type : LOOKUP;
 }
 
 bool word_add(enum word_type t, const char *s)
 {
-	assert(t);
-	if (word_lookup(s))
-	{
-		printf("WARNING: word %s already defined\n", s);
-		return false;
-	}
+	assert(t != LOOKUP);
 
 	struct word *w = malloc(sizeof *w);
 	if (!w) abort();
-	*w = (struct word){ .text = strdup(s), .type = t };
+	w->text = strdup(s);
+	w->type = t;
 	if (!w->text) abort();
 
-	return tsearch(w, &g_words, word_cmp);
+	void *node = tsearch(w, &g_words, word_cmp);
+	if (!node)
+		abort();
+	else if (*(struct word **)node != w)
+	{
+		free(w->text); free(w);
+		printf("WARNING: word %s already defined\n", s);
+		return false;
+	}
+	return true;
 }
 
 int main(void)
