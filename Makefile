@@ -8,5 +8,7 @@ LDLIBS = -ll
 
 all : ch1-01 ch1-02 ch1-04
 
+ch1-04 : ch1-04.o symbol_table.o
+
 clean :
 	find . -maxdepth 1 -perm -111 -type f -exec rm {} +
