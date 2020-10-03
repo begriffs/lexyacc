@@ -52,7 +52,7 @@ always_equal(const void *a, const void *b)
 
 void st_free(struct st_symbol **tab)
 {
-	while (tab)
+	while (*tab)
 	{
 		struct st_symbol *item = *tab;
 		printf("deleting node: string = %s\n", item->name);
