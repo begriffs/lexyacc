@@ -47,7 +47,7 @@ always_equal(const void *a, const void *b)
 {
 	(void) a;
 	(void) b;
-    return 0;
+	return 0;
 }
 
 void st_free(struct st_symbol **tab)
