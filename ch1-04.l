@@ -31,7 +31,7 @@ const char *word_type_names[] = {
 #undef X
 };
 
-struct st_symbol *g_words = NULL;
+void *g_words = NULL;
 %}
 
 %%

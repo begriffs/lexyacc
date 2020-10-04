@@ -13,14 +13,14 @@ name_cmp(const void *a, const void* b)
 	return strcmp(u->name, v->name);
 }
 
-int st_lookup(struct st_symbol **tab, const char *s)
+int st_lookup(void **tab, const char *s)
 {
 	struct st_symbol   y   = { .name = (char *)s },
-	                 **elt = tfind(&y, (void **)tab, name_cmp);
+	                 **elt = tfind(&y, tab, name_cmp);
 	return elt ? (*elt)->type : ST_UNKNOWN;
 }
 
-bool st_add(struct st_symbol **tab, const char *s, int type)
+bool st_add(void **tab, const char *s, int type)
 {
 	assert(type != ST_UNKNOWN);
 
@@ -30,7 +30,7 @@ bool st_add(struct st_symbol **tab, const char *s, int type)
 	y->type = type;
 	if (!y->name) abort();
 
-	struct st_symbol **node = tsearch(y, (void **)tab, name_cmp);
+	struct st_symbol **node = tsearch(y, tab, name_cmp);
 	if (!node)
 		abort();
 	else if (*node != y)
@@ -50,13 +50,12 @@ always_equal(const void *a, const void *b)
 	return 0;
 }
 
-void st_free(struct st_symbol **tab)
+void st_free(void **tab)
 {
 	while (*tab)
 	{
-		struct st_symbol *item = *tab;
-		printf("deleting node: string = %s\n", item->name);
-		tdelete(item, (void **)tab, always_equal);
+		struct st_symbol *item = *(struct st_symbol **)*tab;
+		tdelete(item, tab, always_equal);
 		free(item->name);
 		free(item);
 	}

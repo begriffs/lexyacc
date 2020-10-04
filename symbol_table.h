@@ -11,8 +11,8 @@ struct st_symbol
 	int type;
 };
 
-int  st_lookup(struct st_symbol **tab, const char *s);
-bool st_add(struct st_symbol **tab, const char *s, int type);
-void st_free(struct st_symbol **tab);
+int  st_lookup(void **tab, const char *s);
+bool st_add(void **tab, const char *s, int type);
+void st_free(void **tab);
 
 #endif
