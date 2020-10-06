@@ -13,4 +13,5 @@ ch1-04 : ch1-04.o symbol_table.o
 include config.mk
 
 clean :
-	find . -maxdepth 1 -perm -111 -type f -exec rm {} +
+	find . -name 'ch*' -maxdepth 1 -perm -111 -type f -exec rm {} +
+	rm -f *.lex.* *.tab.* *.o
