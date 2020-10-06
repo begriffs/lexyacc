@@ -1,5 +1,7 @@
 *
 !*.*
+!configure
 *.o
 *.lex.c
 *.tab.[ch]
+*.mk

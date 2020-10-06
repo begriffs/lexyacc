@@ -1,0 +1,21 @@
+#!/bin/sh -eu
+
+# a way to get static pattern rules *without* GNU make, and
+# use them for a chosen subset of the chN-N programs
+
+rm -f config.mk
+
+for prog in ch1-05
+do
+cat >> config.mk <<EOF
+$prog.tab.c $prog.tab.h : $prog.y
+	\$(YACC) -d -b $prog $prog.y
+
+$prog.lex.c : $prog.l $prog.tab.h
+	\$(LEX) -t $prog.l > $prog.lex.c
+
+$prog : $prog.tab.o $prog.lex.o symbol_table.o
+	\$(CC) \$(LDFLAGS) -o \$@ $prog.tab.o symbol_table.o $prog.lex.o -ll -ly
+
+EOF
+done
