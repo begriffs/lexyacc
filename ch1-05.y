@@ -20,3 +20,13 @@ object:		NOUN
 	;
 
 %%
+
+extern FILE *yyin;
+
+int main(void)
+{
+	yyin = stdin;
+	while (!feof(yyin))
+		yyparse();
+	return 0;
+}
