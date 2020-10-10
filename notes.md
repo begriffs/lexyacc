@@ -1,5 +1,7 @@
 Questions from my experiments
 
+## Chapter 1
+
 * How can I avoid adding the boilerplate `%option nounput noinput`
   to every lex file? Tried `LFLAGS = -DYY_NO_UNPUT -DYY_NO_INPUT`
   in the Makefile, but flex no longer supports those macros.
@@ -9,6 +11,8 @@ Questions from my experiments
   after successful build.
 * ch1-04.l - can you somehow use X-macros in rules?
 * ch1-05.y - why must I define yyerror and yylex as extern myself?
+  My own code doesn't use them directly, so I would hope that the generated
+  C parser would #include whatever was needed...
 	ch1-05.tab.c:1039:16: warning: implicit declaration of function 'yylex' is invalid in
 		  C99 [-Wimplicit-function-declaration]
 		  yychar = yylex ();
@@ -22,3 +26,17 @@ Questions from my experiments
 	  yyerror (YY_("memory exhausted"));
 	  ^
 * ch1-05.y - why does yyin default to NULL? I had to set it to stdout
+
+## Chapter 2
+
+* How to deal with international characters?
+	- Character classes and ranges
+		- lex-U algorithm https://www.w3.org/2005/03/23-lex-U
+		- implement it, and have it output a comment before the rule
+		  showing it written with unicode
+	- How to detect word breaks? Can you use a C function rather than
+	  a regex to lex certain tokens? It could tie into ICU that way
+	- Can I maintain my own version of yyleng that measures in
+	  graphemes rather than UTF-8 code units?
+* Why does ch2-03 declare some global variables in the definition
+  section, and others in the C code section?
