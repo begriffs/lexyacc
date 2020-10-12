@@ -38,5 +38,29 @@ Questions from my experiments
 	  a regex to lex certain tokens? It could tie into ICU that way
 	- Can I maintain my own version of yyleng that measures in
 	  graphemes rather than UTF-8 code units?
+	- Maybe I would operate directly on yytext and not consult yyleng
+	  in the unicode case.
 * Why does ch2-03 declare some global variables in the definition
   section, and others in the C code section?
+	A: appears to be that definitio section vars are referenced in
+	   rules, whereas the others are used by internal code
+* How to build an object file that exports
+	struct *thing f(char *s)
+  which lexes/parses s? How to make that thread-safe? Probably consult
+  a thread-local variable in input(). Can the same translation unit
+  export g() that parses in a different way? Test this in a threaded
+  program.
+  - Actually flex has a mode to build a reentrant scanner
+* If two object files both came from lex and were used in the same
+  executable, would tye yylex() etc functions conflict?
+* It's getting annoying that I lose my vim indentation helpers within
+  the C blocks in .l files. Using :set ft="lex.c" mixes them nicely.
+  Weirdly, "c.lex" messes up and shows syntax error colors.
+  Research in here
+  https://vim.fandom.com/wiki/Different_syntax_highlighting_within_regions_of_a_file
+* Slightly different signatures, unput() returns int in modern posix
+* POSIX lex has no way to read input except through a FILE\* interface.
+  "The input() routine is not redefinable." http://westes.github.io/flex/manual/Lex-and-Posix.html#Lex-and-Posix
+  To read from a string, or from a custom function like ch2-06.l, requires
+  AT&T lex or flex. Flex is so common nowadays that might as well use it,
+  and try to deviate from POSIX as little as possible in other respects.
