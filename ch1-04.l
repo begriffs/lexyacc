@@ -47,12 +47,15 @@ void *g_words = NULL;
 
 [a-zA-Z]+ {
 	if (g_state == LOOKUP)
+	{
+		struct st_symbol *s = st_lookup(&g_words, yytext);
 		printf("%s: %s\n",
-			yytext, word_type_names[st_lookup(&g_words, yytext)]);
+			yytext, word_type_names[s ? s->type : LOOKUP]);
+	}
 	else
 	{
 		printf("Adding %s\n", word_type_names[g_state]);
-		st_add(&g_words, yytext, g_state);
+		st_add(&g_words, yytext, g_state, 0.);
 	}
 }
 
