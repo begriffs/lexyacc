@@ -1,4 +1,3 @@
-#include <assert.h>
 #include <stdlib.h>
 #include <search.h>
 #include <stdio.h>
@@ -13,21 +12,21 @@ name_cmp(const void *a, const void* b)
 	return strcmp(u->name, v->name);
 }
 
-int st_lookup(void **tab, const char *s)
+struct st_symbol *
+st_lookup(void **tab, const char *s)
 {
 	struct st_symbol   y   = { .name = (char *)s },
 	                 **elt = tfind(&y, tab, name_cmp);
-	return elt ? (*elt)->type : ST_UNKNOWN;
+	return elt ? *elt : NULL;
 }
 
-bool st_add(void **tab, const char *s, int type)
+bool st_add(void **tab, const char *s, int type, double val)
 {
-	assert(type != ST_UNKNOWN);
-
 	struct st_symbol *y = malloc(sizeof *y);
 	if (!y) abort();
 	y->name = strdup(s);
 	y->type = type;
+	y->val  = val;
 	if (!y->name) abort();
 
 	struct st_symbol **node = tsearch(y, tab, name_cmp);

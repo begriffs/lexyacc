@@ -28,14 +28,14 @@ void *g_words = NULL;
 [a-zA-Z]+ {
 	if (g_state == LOOKUP)
 	{
-		int type = st_lookup(&g_words, yytext);
-		if (type == ST_UNKNOWN)
+		struct st_symbol *s = st_lookup(&g_words, yytext);
+		if (!s)
 			printf("%s unknown\n", yytext);
 		else
-			return type;
+			return s->type;
 	}
 	else
-		st_add(&g_words, yytext, g_state);
+		st_add(&g_words, yytext, g_state, 0.);
 }
 
 .		/* ignore */ ;
