@@ -12,6 +12,8 @@ all : ch1-01 ch1-02 ch1-04 ch1-05 ch1-lex-vs-c-1 ch1-lex-vs-c-2 \
 
 ch1-04 : ch1-04.o symbol_table.o
 
+symbol_table.o : symbol_table.c symbol_table.h
+
 include config.mk
 
 clean :
