@@ -5,7 +5,7 @@
 
 rm -f config.mk
 
-for prog in ch1-05 ch3-02 ch3-04
+for prog in ch1-05 ch3-02 ch3-04 ch4
 do
 cat >> config.mk <<EOF
 $prog.tab.c $prog.tab.h : $prog.y symbol_table.h

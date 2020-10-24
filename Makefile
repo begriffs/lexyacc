@@ -8,7 +8,8 @@ LDLIBS = -ll
 
 all : ch1-01 ch1-02 ch1-04 ch1-05 ch1-lex-vs-c-1 ch1-lex-vs-c-2 \
 	  ch2-03 ch2-06 ch2-09 \
-	  ch3-02 ch3-04
+	  ch3-02 ch3-04 \
+	  ch4
 
 ch1-04 : ch1-04.o symbol_table.o
 
