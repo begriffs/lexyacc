@@ -46,16 +46,18 @@ void *g_words = NULL;
 ^conj   { g_state = CONJ; }
 
 [a-zA-Z]+ {
+	struct st_symbol *s;
 	if (g_state == LOOKUP)
 	{
-		struct st_symbol *s = st_lookup(&g_words, yytext);
+		s = st_find(&g_words, yytext);
 		printf("%s: %s\n",
 			yytext, word_type_names[s ? s->type : LOOKUP]);
 	}
 	else
 	{
-		printf("Adding %s\n", word_type_names[g_state]);
-		st_add(&g_words, yytext, g_state, 0.);
+		printf("Recording %s\n", word_type_names[g_state]);
+		s = st_search(&g_words, yytext);
+		s->type = g_state;
 	}
 }
 

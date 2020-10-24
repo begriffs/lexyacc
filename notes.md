@@ -64,3 +64,11 @@ Questions from my experiments
   To read from a string, or from a custom function like ch2-06.l, requires
   AT&T lex or flex. Flex is so common nowadays that might as well use it,
   and try to deviate from POSIX as little as possible in other respects.
+
+## Chapter 3
+
+* Is it best to declare a shared global in the .l file as extern, and
+  define it in the .y file?
+* It's easier to mimic the tfind/tsearch interface with my symbol table,
+  rather than st_lookup (aka find) and st_add (add full structure, return
+  true or false if new entry was created).

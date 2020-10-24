@@ -26,16 +26,20 @@ void *g_words = NULL;
 ^conj   { g_state = CONJUNCTION; }
 
 [a-zA-Z]+ {
+	struct st_symbol *s;
 	if (g_state == LOOKUP)
 	{
-		struct st_symbol *s = st_lookup(&g_words, yytext);
+		s = st_find(&g_words, yytext);
 		if (!s)
 			printf("%s unknown\n", yytext);
 		else
 			return s->type;
 	}
 	else
-		st_add(&g_words, yytext, g_state, 0.);
+	{
+		s = st_search(&g_words, yytext);
+		s->type = g_state;
+	}
 }
 
 .		/* ignore */ ;
